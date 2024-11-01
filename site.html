@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supermercado Garibaldi - Sistema de Gestão de Estoque</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            background-color: #f5f5f5;
+        }
+        /* Estilo fixo para o cabeçalho */
+        .header {
+            width: 100%;
+            background-color: #fff;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            text-align: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+        }
+        .header h2 {
+            color: #333;
+            margin: 0;
+        }
+        
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            margin-top: 100px; /* Espaço para o header fixo */
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+        .section {
+            margin-top: 10px;
+        }
+        llabel, input[type="date"], select, button {
+            display: block;
+            width: 100%;
+            margin: 8px 0;
+        
+        }
+        button {
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .table-container {
+            overflow-x: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: auto;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+        th {
+            background-color: #f2f2f2;
+            color: black;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+
+<div class="helder">
+    <h2>Sistema de Gestão de Estoque - Supermercado Garibaldi</h2>
+
+    <!-- Seção de Relatório de Vendas por Período -->
+    <div class="section">
+        <h3>Relatório de Vendas</h3>
+        <label for="start-date">Data de Início:</label>
+        <input type="date" id="start-date" max="">
+        
+        <label for="end-date">Data de Fim:</label>
+        <input type="date" id="end-date" max="">
+        
+        <button onclick="generateSalesReport()">Gerar Relatório de Vendas</button>
+
+        <div class="table-container">
+            <table id="sales-report-table">
+                <thead>
+                    <tr>
+                        <th>Produto</th>
+                        <th>Quantidade em Estoque</th>
+                        <th>Quantidade Vendida</th>
+                        <th>Total de Vendas</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Linhas de exemplo, serão substituídas pelos dados reais -->
+                    <tr>
+                        <td>óleo</td>
+                        <td>100</td>
+                        <td>30</td>
+                        <td>R$800,00</td>
+                    </tr>
+                    <tr>
+                        <td>Leite</td>
+                        <td>50</td>
+                        <td>10</td>
+                        <td>R$400,00</td>
+                    </tr>
+                    <tr>
+                        <td>Macarrão</td>
+                        <td>80</td>
+                        <td>15</td>
+                        <td>R$600,00</td>
+                    </tr>
+                    <tr>
+                        <td>feijão</td>
+                        <td>45</td>
+                        <td>28</td>
+                        <td>R$800,00</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Seção de Alerta de Produtos Próximos da Validade -->
+    <div class="section">
+        <h3>Alerta de Produtos Próximos da Validade</h3>
+        <button onclick="checkExpiringProducts()">Ver Produtos Próximos da Validade</button>
+        
+        <div class="table-container">
+            <table id="expiry-alert-table">
+                <thead>
+                    <tr>
+                        <th>Produto</th>
+                        <th>Quantidade em Estoque</th>
+                        <th>Data de Validade</th>
+                    </tr>
+                    <tr>
+                        <th>Leite</th>
+                        <th>50</th>
+                        <th>06/10/2024</th>
+                    </tr>
+                    <tr>
+                        <th>Macarrão</th>
+                        <th>80</th>
+                        <th>15/10/2024</th>
+                    </tr>
+                    <tr>
+                        <th>óleo</th>
+                        <th>30</th>
+                        <th>15/10/2024</th>
+                    </tr>
+                    <tr>
+                        <th>Feijão</th>
+                        <th>45</th>
+                        <th>18/10/2024</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Dados dos produtos próximos da validade -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Seção de Previsão de Demanda -->
+    <div class="section">
+        <h3>Previsão de Demanda</h3>
+        <label for="forecast-period">Período da Previsão:</label>
+        <select id="forecast-period">
+            <option value="7">Próximos 7 dias</option>
+            <option value="30">Próximos 30 dias</option>
+        </select>
+        
+        <button onclick="generateDemandForecast()">Gerar Previsão de Demanda</button>
+        
+        <div class="table-container">
+            <table id="forecast-table">
+                <thead>
+                    <tr>
+                        <th>Produto</th>
+                        <th>Demanda Prevista</th>
+                        <th>Reabastecimento Sugerido</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Dados da previsão de demanda -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Função para atualizar as datas máximas de seleção (não permitir datas futuras)
+    const updateMaxDate = () => {
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById("start-date").max = today;
+        document.getElementById("end-date").max = today;
+    };
+
+    // Função para gerar o relatório de vendas (Simulação)
+    const generateSalesReport = () => {
+        alert('Relatório de Vendas Gerado! (Função Simulada)');
+    };
+
+    // Função para verificar produtos próximos da validade (Simulação)
+    const checkExpiringProducts = () => {
+        alert('Produtos Próximos da Validade Checados! (Função Simulada)');
+    };
+
+    // Função para gerar a previsão de demanda (Simulação)
+    const generateDemandForecast = () => {
+        alert('Previsão de Demanda Gerada! (Função Simulada)');
+    };
+
+    // Chamada inicial para configurar as datas máximas
+    updateMaxDate();
+</script>
+
+</body>
+</html>
